@@ -14,14 +14,10 @@ jobs:
 
             - name: Deploy to Server
               uses: appleboy/ssh-action@master
-              env:
-                  HOST: ${{ secrets.SERVER_HOST }}
-                  USERNAME: ${{ secrets.SERVER_USERNAME }}
-                  PASSWORD: ${{ secrets.SERVER_PASSWORD }}
               with:
-                  host: ${{ env.HOST }}
-                  username: ${{ env.USERNAME }}
-                  password: ${{ env.PASSWORD }}
+                  host: ${{ secrets.SERVER_HOST }}
+                  username: ${{ secrets.SERVER_USERNAME }}
+                  password: ${{ secrets.SERVER_PASSWORD }}
                   script: |
                       cd /var/www/html
                       git pull origin main
