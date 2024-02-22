@@ -25,6 +25,7 @@ import DefaultLayout from "../layouts/defaultLayout.astro";
             "Flask-webshop-example",
             "RpiWeatherDisplay",
         ];
+        const priority = ["responseplan.de", "ResponsePlan", "yagll"];
 
         fetch(`https://api.github.com/users/${username}/repos`)
             .then((response) => response.json())
@@ -34,25 +35,26 @@ import DefaultLayout from "../layouts/defaultLayout.astro";
                         name: string;
                         description: string | null;
                         homepage: string | null;
-                        url: string;
+                        html_url: string;
                     }) => {
                         if (blacklist.includes(repo.name)) return;
                         let node = document.createElement("div");
                         node.innerHTML =
-                            `
-                    <div class="card w-96 bg-base-100 border-neutral border-2 shadow-xl">
-                      <div class="card-body">
-                        <h2 class="card-title">${repo.name}</h2>
-                        <p class="m-4">${repo.description}</p>
-                        <div class="card-actions justify-end">` +
+                            `<div class="card w-96 bg-base-100 border-neutral border-2 shadow-xl">
+                              <div class="card-body">
+                                <h2 class="card-title">${repo.name}</h2>
+                                <p class="m-4">${repo.description}</p>
+                                <div class="card-actions justify-end">` +
                             (repo.homepage
                                 ? `<a target="_blank" href="${repo.homepage}" class="btn btn-secondary">Website</a>`
                                 : "") +
                             `
-                          <a target="_blank" href="${repo.url}" class="btn btn-primary">GitHub</a>
-                        </div>
-                      </div>
-                    </div>`;
+                                  <a target="_blank" href="${repo.html_url}" class="btn btn-primary">GitHub</a>
+                                </div>
+                              </div>
+                            </div>
+                            `;
+
                         document.getElementById("projects")?.appendChild(node);
                     }
                 );
