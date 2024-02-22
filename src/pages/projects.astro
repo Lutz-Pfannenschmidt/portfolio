@@ -34,6 +34,7 @@ import DefaultLayout from "../layouts/defaultLayout.astro";
                         name: string;
                         description: string | null;
                         homepage: string | null;
+                        url: string;
                     }) => {
                         if (blacklist.includes(repo.name)) return;
                         let node = document.createElement("div");
@@ -45,10 +46,10 @@ import DefaultLayout from "../layouts/defaultLayout.astro";
                         <p class="m-4">${repo.description}</p>
                         <div class="card-actions justify-end">` +
                             (repo.homepage
-                                ? `<a href="${repo.homepage}" class="btn btn-secondary">Website</a>`
+                                ? `<a target="_blank" href="${repo.homepage}" class="btn btn-secondary">Website</a>`
                                 : "") +
                             `
-                          <button class="btn btn-primary">GitHub</button>
+                          <a target="_blank" href="${repo.url}" class="btn btn-primary">GitHub</a>
                         </div>
                       </div>
                     </div>`;
