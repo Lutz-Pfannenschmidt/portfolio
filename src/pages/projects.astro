@@ -53,10 +53,16 @@ import DefaultLayout from "../layouts/defaultLayout.astro";
                                   <a target="_blank" href="${repo.html_url}" class="btn btn-primary">GitHub</a>
                                 </div>
                               </div>
-                            </div>
-                            `;
+                            </div>`;
 
-                        document.getElementById("projects")?.appendChild(node);
+                        if (priority.includes(repo.name)) {
+                            document.getElementById("projects")?.prepend(node);
+                            return;
+                        } else {
+                            document
+                                .getElementById("projects")
+                                ?.appendChild(node);
+                        }
                     }
                 );
             })
