@@ -1,0 +1,36 @@
+---
+import MoonIcon from "./icons/moonIcon.astro";
+import SunIcon from "./icons/sunIcon.astro";
+--- 
+
+<script>
+  function setTheme(theme: "dark" | "light") {
+    console.log("switch")
+    const switcher = document.querySelector("input#theme-switch") as HTMLInputElement
+    switcher.checked = theme === "dark"
+    document.documentElement.dataset.theme = theme
+    window.localStorage.setItem("theme", theme)
+  }
+
+  function switchTheme() {
+    const curr = document.documentElement.dataset.theme || "dark"
+    setTheme(curr === "light" ? "dark" : "light" )
+  }
+  
+  const switcher = document.querySelector("input#theme-switch") as HTMLInputElement
+  switcher.addEventListener("click", switchTheme)
+
+  const localStorageTheme = window.localStorage.getItem("theme")
+  const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  switcher.checked = localStorageTheme ? localStorageTheme === "dark" : prefersDarkMode
+  document.documentElement.dataset.theme = switcher.checked ? "dark" : "light"
+
+</script>
+
+<label class="swap swap-rotate px-4">
+  <input type="checkbox" id="theme-switch" />
+  
+  <div class="swap-on w-10 h-10"><SunIcon /></div>
+  <div class="swap-off w-10 h-10"><MoonIcon /></div>
+
+</label>

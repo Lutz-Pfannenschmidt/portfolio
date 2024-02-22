@@ -1,0 +1,81 @@
+---
+import DefaultLayout from "../layouts/defaultLayout.astro";
+---
+
+<DefaultLayout title="Lutz Pfannenschmidt">
+	<div class="hero h-full">
+    <div class="hero-content text-center">
+      <div class="max-w-4lg">
+				<h1 class="text-6xl">Hey, I'm Lutz Pfannenschmidt 👋</h1>
+        <p class="py-6">
+					<p class="text-4xl text-left">I like <span id="text" class="text-accent">text animations that require you to disable noscript!</span> <span id="coursor" class="animate-blink">|</span></p>
+					<p class="text-left text-lg">
+						I'm a student from Germany and programming is my passion. <br>
+						I enjoy programming anything and studying during the process. <br>
+						I like privacy, which is why i have an interest in onion sites. <br>
+						<span class="tooltip tooltip-primary" data-tip="Click to copy! (if js is enabled)">
+							<a class="copy-href text-accent" target="_blank" href="http://lutzpfdprezdjyzrktwtdz54y2spwv6r5mix3piqf6wgipoi2b4pfeid.onion">Visit this page on tor!</a>
+						</span>
+					</p>
+        </p>
+      </div>
+    </div>
+  </div>
+</DefaultLayout>
+
+<script>
+
+	const anchors = document.querySelectorAll("a.copy-href") as NodeListOf<HTMLAnchorElement>
+
+	anchors.forEach((anchor) => {
+		anchor.addEventListener("click", (e) => {
+			e.preventDefault()
+			navigator.clipboard.writeText(anchor.getAttribute("href") || "")
+			if (!anchor.parentElement) return
+			anchor.parentElement.classList.add("tooltip-success")
+			anchor.parentElement.dataset.tip = "copied url to clipboard 👍"
+			setTimeout(() => {
+				if (!anchor.parentElement) return
+				anchor.parentElement.classList.remove("tooltip-success")
+				anchor.parentElement.dataset.tip = "Click to copy! (if js is enabled)"
+			}, 1500)
+		})
+	})
+
+</script>
+
+<script>
+	function wait(ms: number) {
+		return new Promise(resolve => setTimeout(resolve, ms));	
+	}
+
+	async function typewriter() {
+		const text = document.getElementById("text")
+		if (text === null) return
+		text.textContent = ""
+		const strings = ["programming.", "studying.", "sleeeeeping.", "privacy.", "foss!"]
+		for (let i = 0;i < strings.length; i++) {
+			for (let j = 0;j < strings[i].length; j++) {
+				text.textContent += strings[i][j]
+				await wait(100)
+			}
+			await wait(1000)
+			text.textContent = ""
+			await wait(100)
+		}
+	}
+
+	while (true) {
+		await typewriter()
+	}
+</script>
+
+<style>
+	@keyframes blink {
+		0% { opacity: 0; }
+		50% { opacity: 0; }
+		50.1% { opacity: 1; }
+		100% { opacity: 1; }
+	}
+	.animate-blink {animation: blink 1s infinite;}
+</style>
