@@ -26,7 +26,7 @@ function renderSkeletons(count: number): string {
     </p>
 
     <div
-        class="hero-content text-center flex flex-wrap items-start justify-items-stretch max-w-screen mx-auto"
+        class="hero-content text-center flex flex-wrap items-stretch justify-items-stretch max-w-screen mx-auto"
         id="projects"
 				set:html={renderSkeletons(20)}
     >
@@ -42,7 +42,7 @@ function renderSkeletons(count: number): string {
         ];
         const priority: string[] = ["responseplan.de", "ResponsePlan", "yagll"];
 
-        // fetchRepositories(username);
+        fetchRepositories(username);
 
         async function fetchRepositories(username: string): Promise<void> {
             try {
