@@ -1,5 +1,17 @@
 ---
 import DefaultLayout from "../layouts/defaultLayout.astro";
+
+function renderSkeletons(count: number): string {
+    let skeletons = '';
+    for (let i = 0; i < count; i++) {
+        skeletons += `
+            <div class="card w-96 h-48 bg-base-100 rounded border-neutral border-2 shadow-xl">
+                <div class="skeleton w-full h-full"></div>
+            </div>
+        `;
+    }
+    return skeletons;
+}
 ---
 
 <DefaultLayout title="Lutz Pf | Projects">
@@ -16,59 +28,57 @@ import DefaultLayout from "../layouts/defaultLayout.astro";
     <div
         class="hero-content text-center flex flex-wrap items-start justify-items-stretch max-w-screen mx-auto"
         id="projects"
+				set:html={renderSkeletons(20)}
     >
     </div>
 
     <script>
-        const username = "Lutz-Pfannenschmidt";
-        const blacklist = [
+        const username: string = "Lutz-Pfannenschmidt";
+        const blacklist: string[] = [
             "dotfiles",
             "Flask-webshop-example",
             "RpiWeatherDisplay",
             "Lutz-Pfannenschmidt",
         ];
-        const priority = ["responseplan.de", "ResponsePlan", "yagll"];
+        const priority: string[] = ["responseplan.de", "ResponsePlan", "yagll"];
 
-        fetch(`https://api.github.com/users/${username}/repos`)
-            .then((response) => response.json())
-            .then((repos) => {
-                repos.forEach(
-                    (repo: {
-                        name: string;
-                        description: string | null;
-                        homepage: string | null;
-                        html_url: string;
-                    }) => {
-                        if (blacklist.includes(repo.name)) return;
-                        let node = document.createElement("div");
-                        node.innerHTML =
-                            `<div class="card w-96 bg-base-100 rounded border-neutral border-2 shadow-xl">
-                              <div class="card-body">
-                                <h2 class="card-title">${repo.name}</h2>
-                                <p class="my-4 text-left">${repo.description}</p>
-                                <div class="card-actions justify-end">` +
-                            (repo.homepage
-                                ? `<a target="_blank" href="${repo.homepage}" class="btn btn-secondary">Website</a>`
-                                : "") +
-                            `
-                                  <a target="_blank" href="${repo.html_url}" class="btn btn-primary">GitHub</a>
-                                </div>
-                              </div>
-                            </div>`;
+        // fetchRepositories(username);
 
-                        if (priority.includes(repo.name)) {
-                            document.getElementById("projects")?.prepend(node);
-                            return;
-                        } else {
-                            document
-                                .getElementById("projects")
-                                ?.appendChild(node);
-                        }
-                    }
-                );
-            })
-            .catch((error) =>
-                console.error("Failed to fetch repositories:", error)
-            );
+        async function fetchRepositories(username: string): Promise<void> {
+            try {
+                const response = await fetch(`https://api.github.com/users/${username}/repos`);
+                const repos: any[] = await response.json();
+                document.getElementById("projects")!.innerHTML = "";
+                repos.forEach(renderRepo);
+            } catch (error) {
+                console.error("Failed to fetch repositories:", error);
+            }
+        }
+
+        function renderRepo(repo: any): void {
+            if (blacklist.includes(repo.name)) return;
+
+            const node = createRepoNode(repo);
+            if (priority.includes(repo.name)) {
+                document.getElementById("projects")?.prepend(node);
+            } else {
+                document.getElementById("projects")?.appendChild(node);
+            }
+        }
+
+        function createRepoNode(repo: any): HTMLElement {
+            return new DOMParser().parseFromString(`
+                <div class="card w-96 bg-base-100 rounded border-neutral border-2 shadow-xl">
+                    <div class="card-body">
+                        <h2 class="card-title">${repo.name}</h2>
+                        <p class="my-4 text-left">${repo.description || 'No description available'}</p>
+                        <div class="card-actions justify-end">
+                            ${repo.homepage ? `<a target="_blank" href="${repo.homepage}" class="btn btn-secondary">Website</a>` : ''}
+                            <a target="_blank" href="${repo.html_url}" class="btn btn-primary">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            `, 'text/html').body.firstChild as HTMLElement;
+        }
     </script>
 </DefaultLayout>
