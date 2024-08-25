@@ -16,5 +16,8 @@
     "daisyui": "latest",
     "tailwindcss": "^3.0.24",
     "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3"
   }
 }

@@ -2,15 +2,15 @@
 import DefaultLayout from "../layouts/defaultLayout.astro";
 
 function renderSkeletons(count: number): string {
-    let skeletons = '';
-    for (let i = 0; i < count; i++) {
-        skeletons += `
+	let skeletons = "";
+	for (let i = 0; i < count; i++) {
+		skeletons += `
             <div class="card w-96 h-48 bg-base-100 rounded border-neutral border-2 shadow-xl">
                 <div class="skeleton w-full h-full"></div>
             </div>
         `;
-    }
-    return skeletons;
+	}
+	return skeletons;
 }
 ---
 
