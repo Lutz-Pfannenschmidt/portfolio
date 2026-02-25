@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+    --color-*: initial;
+    --color-primary: #AC82E9;
+    --color-secondary: #9dffdb;
+    --color-accent: #C4E881;
+    --color-cream: #D8CAB8;
+    --color-black: #141216;
+}
+
+@layer base {
+
+    html,
+    body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        @apply text-primary bg-black;
+    }
+
+
+    span,
+    p {
+        @apply text-secondary
+    }
+}
